@@ -13,6 +13,7 @@
   <div class="grain" aria-hidden="true"></div>
   <div class="cursor" aria-hidden="true"></div>
   <div class="trail" aria-hidden="true"></div>
+  <div class="hearts" aria-hidden="true"></div>
 
   <main class="stage" aria-label="Marta">
     <section class="name-mark">
@@ -25,8 +26,34 @@
   <script>
     const cursor = document.querySelector('.cursor');
     const trail = document.querySelector('.trail');
+    const hearts = document.querySelector('.hearts');
     const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const heartClasses = ['heart-blue', 'heart-gold', 'heart-light'];
+
+    function burstHearts(x, y) {
+      const amount = reduceMotion ? 10 : 34;
+
+      for (let i = 0; i < amount; i += 1) {
+        const heart = document.createElement('span');
+        const angle = (Math.PI * 2 * i) / amount + Math.random() * 0.65;
+        const distance = 72 + Math.random() * 190;
+        const size = 12 + Math.random() * 34;
+        const spin = -260 + Math.random() * 520;
+
+        heart.className = heartClasses[i % heartClasses.length];
+        heart.textContent = '♥';
+        heart.style.left = `${x}px`;
+        heart.style.top = `${y}px`;
+        heart.style.fontSize = `${size}px`;
+        heart.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
+        heart.style.setProperty('--y', `${Math.sin(angle) * distance - 80}px`);
+        heart.style.setProperty('--spin', `${spin}deg`);
+        heart.style.setProperty('--delay', `${Math.random() * 90}ms`);
+        hearts.appendChild(heart);
+        setTimeout(() => heart.remove(), 1550);
+      }
+    }
 
     if (canHover) {
       document.body.classList.add('has-cursor');
@@ -54,6 +81,10 @@
         cursor.style.top = '-100px';
       });
     }
+
+    window.addEventListener('pointerdown', (event) => {
+      burstHearts(event.clientX, event.clientY);
+    });
   </script>
 </body>
 </html>

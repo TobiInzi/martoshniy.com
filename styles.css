@@ -174,6 +174,14 @@ h1 {
   pointer-events: none;
 }
 
+.hearts {
+  position: fixed;
+  inset: 0;
+  z-index: 18;
+  pointer-events: none;
+  overflow: hidden;
+}
+
 .trail span {
   position: absolute;
   width: 0.42rem;
@@ -193,10 +201,77 @@ h1 {
   box-shadow: 0 0 1rem rgba(255, 215, 0, 0.7);
 }
 
+.hearts span {
+  position: absolute;
+  display: block;
+  font-family: "Times New Roman", Georgia, serif;
+  font-weight: 900;
+  line-height: 1;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.25) rotate(0deg);
+  animation: heart-burst 1450ms cubic-bezier(0.16, 0.82, 0.22, 1) var(--delay) forwards;
+  will-change: transform, opacity, filter;
+}
+
+.heart-blue {
+  color: var(--blue);
+  text-shadow:
+    0 0 0.45rem rgba(255, 250, 240, 0.75),
+    0 0 1.4rem rgba(0, 87, 183, 0.9),
+    0 0 2.8rem rgba(0, 87, 183, 0.45);
+}
+
+.heart-gold {
+  color: var(--gold);
+  text-shadow:
+    0 0 0.45rem rgba(255, 250, 240, 0.7),
+    0 0 1.4rem rgba(255, 215, 0, 0.9),
+    0 0 2.8rem rgba(255, 215, 0, 0.45);
+}
+
+.heart-light {
+  color: #fff6d8;
+  text-shadow:
+    0 0 0.45rem rgba(255, 215, 0, 0.9),
+    0 0 1.4rem rgba(0, 87, 183, 0.75),
+    0 0 2.8rem rgba(255, 250, 240, 0.5);
+}
+
 @keyframes spark {
   to {
     opacity: 0;
     transform: translate(calc(-50% + var(--drift-x)), calc(-50% + var(--drift-y))) scale(0.2);
+  }
+}
+
+@keyframes heart-burst {
+  0% {
+    opacity: 0;
+    filter: blur(0.4rem);
+    transform: translate(-50%, -50%) scale(0.18) rotate(0deg);
+  }
+
+  12% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate(-50%, -50%) scale(1.35) rotate(calc(var(--spin) * 0.14));
+  }
+
+  62% {
+    opacity: 0.95;
+    transform:
+      translate(calc(-50% + var(--x) * 0.82), calc(-50% + var(--y) * 0.72))
+      scale(1)
+      rotate(calc(var(--spin) * 0.74));
+  }
+
+  100% {
+    opacity: 0;
+    filter: blur(0.08rem);
+    transform:
+      translate(calc(-50% + var(--x)), calc(-50% + var(--y) - 120px))
+      scale(0.18)
+      rotate(var(--spin));
   }
 }
 
